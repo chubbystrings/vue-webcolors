@@ -6,17 +6,17 @@
       <h1>WebColors</h1>
       
       
-      <input type="text" v-model='value' placeholder="search colors e.g: gold, #ffd700, 255">
+      <input @focus="changeScroll" type="text" v-model='value' @blur="resetScroll" placeholder="search colors e.g: gold, #ffd700, 255">
     
       <div class="colorOptions" v-if="value">
         <transition-group name="fade" appear>
-        <app-colors v-for="v in paginatedData" @clicked="clickColor($event)" :key="v" :v="v">{{v}}</app-colors>
+          <app-colors v-for="v in paginatedData" @clicked="clickColor($event)" :key="v" :v="v">{{v}}</app-colors>
         </transition-group>
       </div>
    
 
       <transition name="fade" appear>
-      <div class="paginationBtn" v-if="value">
+      <div class="paginationBtn" v-if="windowWidth" >
         <div v-show="value">Page {{pageCount > 0 ? pageNumber + 1 : pageNumber = 0}} of {{pageCount}}</div>
         <button :disabled="pageNumber === 0 || value == ''" @click="prevPage">Prev</button>
         <button :disabled="pageNumber >= pageCount - 1 || value == ''" @click="nextPage">Next</button>
@@ -41,6 +41,8 @@ export default {
       matched: [],
       singleMatched: [],
       loaded: false,
+      initialOffset: '',
+      windowWidth: true,
 colors:  [
       {name:'aliceblue',	hex:'#F0F8FF',	rgb:'240, 248, 255'},
       {name:'antiquewhite',	hex:'#FAEBD7',	rgb:'250, 235, 215'},
@@ -191,7 +193,7 @@ colors:  [
       ],
       value: '',
       listData: '',
-      size: 10
+      size: 7
     }
   },
 
@@ -248,7 +250,10 @@ colors:  [
     paginatedData(){
       const start = this.pageNumber * this.size, end =  start + this.size
       return this.listData.slice(start, end)
-    }
+    },
+
+
+    
   },
 
   methods: {
@@ -279,7 +284,19 @@ colors:  [
     },
     prevPage(){
         this.pageNumber--
-      }
+    },
+
+    changeScroll(){
+       this.initialOffset = window.innerWidth
+       if(this.initialOffset < 600){
+         this.windowWidth = false
+       }
+      
+    },
+
+    resetScroll(){
+      this.windowWidth = true
+    }
   },
 
   components: {

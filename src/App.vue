@@ -1,9 +1,10 @@
 <template>
 
   <div id="app" :style="{backgroundColor: color}">
-    <transition name="slide" mode="out-in" appear>
-    <Home @background="color=$event" ></Home>
+   <transition name="slide" mode="out-in">
+      <Home></Home>
     </transition>
+            
   </div>
 
 </template>

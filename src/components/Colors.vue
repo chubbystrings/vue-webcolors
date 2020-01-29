@@ -18,8 +18,9 @@ export default {
 </script>
 <style scoped>
 .displayedColors {
+    margin-top: 0.7rem;
   font-size: 20px;
-  height: 2.7rem;
+  height: 3.0rem;
   width: 15rem;
   display: flex;
   justify-content: flex-start;
