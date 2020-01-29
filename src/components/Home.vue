@@ -6,9 +6,10 @@
       <h1>WebColors</h1>
       
       
-      <input @focus="changeScroll" type="text" v-model='value' @blur="resetScroll" placeholder="search colors e.g: gold, #ffd700, 255">
-    
+      <input @focus="changeScroll" @blur="resetScroll"  type="text" ref="input"  placeholder="search colors e.g: gold, #ffd700, 255">
+      <button class="colorSearchBtn" @click="showValue">Search</button>
       <div class="colorOptions" v-if="value">
+        
         <transition-group name="fade" appear>
           <app-colors v-for="v in paginatedData" @clicked="clickColor($event)" :key="v" :v="v">{{v}}</app-colors>
         </transition-group>
@@ -16,8 +17,8 @@
    
 
       <transition name="fade" appear>
-      <div class="paginationBtn" v-if="windowWidth" >
-        <div v-show="value">Page {{pageCount > 0 ? pageNumber + 1 : pageNumber = 0}} of {{pageCount}}</div>
+      <div class="paginationBtn" v-if="!windowWidth">
+        <div  v-if="value"><em >Page {{pageCount > 0 ? pageNumber + 1 : pageNumber = 0}} of {{pageCount}}</em></div>
         <button :disabled="pageNumber === 0 || value == ''" @click="prevPage">Prev</button>
         <button :disabled="pageNumber >= pageCount - 1 || value == ''" @click="nextPage">Next</button>
         
@@ -42,7 +43,7 @@ export default {
       singleMatched: [],
       loaded: false,
       initialOffset: '',
-      windowWidth: true,
+      windowWidth: false,
 colors:  [
       {name:'aliceblue',	hex:'#F0F8FF',	rgb:'240, 248, 255'},
       {name:'antiquewhite',	hex:'#FAEBD7',	rgb:'250, 235, 215'},
@@ -202,6 +203,7 @@ colors:  [
     
     filteredColors(){
       const e = Array.from(this.value)[0]
+
       if(e && e === '#'){
         this.value = this.value.toUpperCase()
         this.colorSearch = 'hex'
@@ -220,22 +222,22 @@ colors:  [
 
       const matched = []
       
-        this.colors.forEach((color) => {
-          if(e && this.colorSearch){
-            if(this.colorSearch === 'hex' || this.colorSearch === 'name'){
-              matched.push(color[this.colorSearch])
-            }
-            if(this.colorSearch === "rgb"){
-              matched.push(`rgb(${color[this.colorSearch]})`)
-            }
+      this.colors.forEach((color) => {
+        if(e && this.colorSearch){
+          if(this.colorSearch === 'hex' || this.colorSearch === 'name'){
+            matched.push(color[this.colorSearch])
           }
-           
-        })
+          if(this.colorSearch === "rgb"){
+            matched.push(`rgb(${color[this.colorSearch]})`)
+          }
+        }
+          
+      })
         
         
-        return matched.filter((f) => {
-            return f.match(this.value)
-        })
+      return matched.filter((f) => {
+          return f.match(this.value)
+      })
       
     },
 
@@ -279,6 +281,10 @@ colors:  [
       
       
     },
+
+    showValue(){
+      this.value = this.$refs.input.value
+    },
     nextPage(){
         this.pageNumber++
     },
@@ -289,13 +295,14 @@ colors:  [
     changeScroll(){
        this.initialOffset = window.innerWidth
        if(this.initialOffset < 600){
-         this.windowWidth = false
+        
+         this.windowWidth = true
        }
       
     },
 
     resetScroll(){
-      this.windowWidth = true
+      this.windowWidth = false
     }
   },
 
@@ -311,7 +318,7 @@ colors:  [
 
 .input input {
     font: inherit;
-    width: 70vw;
+    width: 50vw;
     padding: 6px 12px;
     box-sizing: border-box;
     border: 1px solid #ccc;
@@ -335,6 +342,31 @@ colors:  [
   cursor: pointer;
   background-color: #f8f9fa;
 } 
+
+.colorSearchBtn {
+  margin-left: 1rem;
+   border: 1px solid #4AAE9B;
+  color: black;
+  padding: 10px 20px;
+  font: inherit;
+  cursor: pointer;
+  background-color: #f8f9fa;
+}
+
+.colorSearchBtn:hover,
+.colorSearchBtn:active {
+background-color: #4AAE9B;
+color: black;
+}
+
+.colorSearchBtn[disabled],
+.colorSearchBtn[disabled]:hover,
+.colorSearchBtn[disabled]:active {
+border: 1px solid #ccc;
+background-color: transparent;
+color: #ccc;
+cursor: not-allowed;
+}
 
 .paginationBtn {
   
