@@ -210,7 +210,8 @@ colors:  [
         
       }
 
-      if( e && /^[a-z]/.test(e.toLowerCase())){
+      if( e && /^[a-zA-Z]/.test(e)){
+        this.value = this.value.toLowerCase()
         this.colorSearch = 'name'
         
       }
