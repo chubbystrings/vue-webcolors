@@ -1,5 +1,7 @@
 # webcolors
 
+search all html colors available for web design
+
 ## Project setup
 ```
 npm install
