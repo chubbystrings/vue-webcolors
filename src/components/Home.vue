@@ -16,8 +16,7 @@
    
 
       <transition name="fade" appear>
-      <div class="paginationBtn">
-   
+      <div class="paginationBtn" v-if="value && colorSearch">
         <div v-show="value">Page {{pageCount > 0 ? pageNumber + 1 : pageNumber = 0}} of {{pageCount}}</div>
         <button :disabled="pageNumber === 0 || value == ''" @click="prevPage">Prev</button>
         <button :disabled="pageNumber >= pageCount - 1 || value == ''" @click="nextPage">Next</button>
@@ -204,17 +203,17 @@ colors:  [
       if(e && e === '#'){
         this.value = this.value.toUpperCase()
         this.colorSearch = 'hex'
-        console.log(this.colorSearch)
+        
       }
 
       if( e && /^[a-z]/.test(e.toLowerCase())){
         this.colorSearch = 'name'
-        console.log(this.colorSearch)
+        
       }
 
       if(e && Number(e)){
         this.colorSearch = 'rgb'
-        console.log(this.colorSearch)
+       
       }
 
       const matched = []
@@ -231,7 +230,7 @@ colors:  [
            
         })
         
-        console.log(this.matched)
+        
         return matched.filter((f) => {
             return f.match(this.value)
         })
@@ -258,7 +257,7 @@ colors:  [
       if(this.colorSearch === 'rgb'){
         matcher = v.match(/\d+/g).join(', ')
         this.value = matcher
-        console.log(matcher)
+        
       }else{
         matcher = v
         this.value = matcher
@@ -273,7 +272,7 @@ colors:  [
         this.colorApp = true
       }
       
-      console.log(this.pageNumber)
+      
     },
     nextPage(){
         this.pageNumber++
