@@ -16,7 +16,7 @@
    
 
       <transition name="fade" appear>
-      <div class="paginationBtn" v-if="value && colorSearch">
+      <div class="paginationBtn" v-if="value">
         <div v-show="value">Page {{pageCount > 0 ? pageNumber + 1 : pageNumber = 0}} of {{pageCount}}</div>
         <button :disabled="pageNumber === 0 || value == ''" @click="prevPage">Prev</button>
         <button :disabled="pageNumber >= pageCount - 1 || value == ''" @click="nextPage">Next</button>
