@@ -1,37 +1,131 @@
 <template>
 <transition name="slide" appear mode="out-in">
     <div class="colorApp" >
-        <h1> HEX {{color[0].hex}}</h1>
-        <h1> RGB {{color[0].rgb}}</h1>
-        <h3>{{color[0].name}}</h3>
+        <h2> HEX: {{color[0].hex}}
+            <span  class="copyBtn" @click.stop.prevent="copyText('hex')">Copy</span>
+        </h2> 
+        <input id="hex" type="hidden" :value="color[0].hex"> 
         
-        <transition name="fade" appear>
+         
+        <h2> RGB: {{color[0].rgb}}
+            <span  class="copyBtn" @click.stop.prevent="copyText('rgb')">Copy</span>
+        </h2> 
+        <input id="rgb" type="hidden" :value="color[0].rgb"> 
+        
+        <h2> NAME: {{color[0].name}}
+            <span  class="copyBtn" @click.stop.prevent="copyText('name')">Copy</span>
+        </h2> 
+        <input id="name" type="hidden" :value="color[0].name"> 
+         
+        
+            <p id="copied" v-if="copied">{{copied}}</p>
+        
+        
+        
             <div class="displayColorDiv">
                 <div class="displayColor" :style="{backgroundColor: color[0].hex}"></div>  
             </div>
-        </transition>
-        <transition name="fade" appear>
+        
+        
             <div class="homeButtonDiv">
             <button @click="backToHome">Home</button>
             </div>
-        </transition>
+        
     </div>
 </transition>    
 </template>
 <script>
 export default {
+    data(){
+        return {
+            copied: ''
+        }
+    },
     props: ['color'],
 
     methods: {
         backToHome(){
-            this.$emit('home', 'back')
+            this.$emit('home',)
+        },
+
+        copyText(value){
+            let selected = document.querySelector('#'+ value)
+            selected.setAttribute('type', 'text')
+            selected.select()
+             
+            const success = document.execCommand('copy');
+            const copy = success ? 'Copied successful' : 'unsuccessful';
+            this.copiedTimer(copy)
+             
+
+          /* unselect the range */
+          selected.setAttribute('type', 'hidden')
+          window.getSelection().removeAllRanges()
+
+        },
+
+
+        copiedTimer(v){
+            this.copied = v
+            setTimeout(() => {
+                this.copied = ''
+            }, 2000)
         }
     }
 }
 </script>
 <style scoped>
 
+.colorApp input {
+    margin: 0 auto;
+    height: 3rem;
+    width: 10rem;
+    background-color: #2F4F4F;
+    border: 1px solid #2F4F4F;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-family: inherit;
 
+}
+
+
+
+#copied {
+    
+    margin: 0 auto;
+    background-color: lightgreen;
+    height: 2rem;
+    width: 20rem;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    padding: auto;
+}
+
+h2 {
+    font-size: 14px;
+}
+
+.copyBtn {
+    position: absolute;
+    right: 1rem;
+    border: 1px solid #4AAE9B;
+    box-sizing: border-box;
+    color: black;
+    padding: 2px 5px;
+    font: inherit;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    font-size: 15px;
+    box-shadow: 1px 1px 1px black;
+}
+
+.copyBtn:hover,
+.copyBtn:active {
+    background-color: #4AAE9B;
+    color: black;
+}
 .displayColorDiv {
   width: 100%;
   position: fixed;
@@ -78,62 +172,10 @@ export default {
     cursor: not-allowed;
 }
 
-.fade-enter {
-  opacity: 0
-}
-.fade-enter-active {
-  transition: opacity 3s;
-}
-
-/* .fade-leave {
-  
-} */
-
-.fade-leave-active {
-  transition: opacity 1s;
-  opacity: 0;
-  position: absolute;
-}
-.fade-move {
-  transition: transform 1s;
-}
-
-.slide-enter-active {
-    animation: slide-in 200ms ease-out forwards
-    
-
-}
-.slide-leave-active {
-    animation: slide-out 200ms ease-out forwards;
-
-}
-.slide-move {
-    transition: transform 1s ease-out;
-}
-
-
-
-    @keyframes slide-in {
-        from {
-            transform: translateY(-30px);
-            opacity: 0
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1
-        }
+@media(min-width: 800px){
+    .copyBtn {
+        right: 30rem;
     }
-    @keyframes slide-out {
-        from {
-            transform: translateY(0);
-            opacity: 1
-        }
-        to {
-            transform: translateY(-30px);
-            opacity: 0;
-
-        }
-    }
-
+}
 
 </style>
