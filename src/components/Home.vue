@@ -142,7 +142,7 @@ export default {
     },
 
     showValue(){
-      if(!this.$refs.input.value){ return }
+      if(!this.$refs.input.value){ return false}
       this.$store.dispatch('alterValue', this.$refs.input.value)
     },
     nextPage(){

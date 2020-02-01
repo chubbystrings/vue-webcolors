@@ -21,7 +21,7 @@ export default {
     margin-top: 0.7rem;
   font-size: 20px;
   height: 3.0rem;
-  width: 15rem;
+  width: 16rem;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -34,7 +34,7 @@ export default {
   box-shadow: 0 0.4rem 1.4rem 0 black;
   transform: translateY(-0.1rem);
   transition: transform 500ms;
-  width: 13rem;
+  
 }
 
 span.sampleColor {
